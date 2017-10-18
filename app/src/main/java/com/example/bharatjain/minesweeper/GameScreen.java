@@ -249,6 +249,14 @@ public class GameScreen extends AppCompatActivity{
         progress.setText("Game Over!");
 
         loseDialog();
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        TextView textView = (TextView) findViewById(R.id.timer);
+        editor.putString("time",textView.getText().toString());
+
+        editor.apply();
     }
 
     public void reset(View view){
