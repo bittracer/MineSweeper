@@ -91,6 +91,7 @@ public class GameScreen extends AppCompatActivity{
                     // Check if the clicked cell has any number on it
                     if(helperItems[position] > 0){
                         items[position] = openAddr[helperItems[position]];
+                        helperItems[position] = -1;
                         checkIfUserWin();
                     }else{
                         helperItems[position] = -9;// This means that it was initially zero
@@ -249,14 +250,6 @@ public class GameScreen extends AppCompatActivity{
         progress.setText("Game Over!");
 
         loseDialog();
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = preferences.edit();
-
-        TextView textView = (TextView) findViewById(R.id.timer);
-        editor.putString("time",textView.getText().toString());
-
-        editor.apply();
     }
 
     public void reset(View view){
