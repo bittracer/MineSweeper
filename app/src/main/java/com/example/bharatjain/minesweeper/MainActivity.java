@@ -29,7 +29,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onRestart() {
+        // When the user press the baclk button on the game screen, It will invoke this to set the High score again
         super.onRestart();
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         TextView _score = (TextView) findViewById(R.id.score);

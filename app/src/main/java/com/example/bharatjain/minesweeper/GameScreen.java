@@ -78,6 +78,7 @@ public class GameScreen extends AppCompatActivity{
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
 
+                // This will be called when user taps on cell
                 if(helperItems[position] == BOMB){
                     // Blast all bomb
                     for(Integer location:_location){
@@ -107,6 +108,7 @@ public class GameScreen extends AppCompatActivity{
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
                                            int position, long arg3) {
 
+                // This will be used when user long press the cell, It will display/remove the flag
                 TextView textView = (TextView) findViewById(R.id.flag);
 
                 if(topFlag ==0){
@@ -128,6 +130,8 @@ public class GameScreen extends AppCompatActivity{
     }
 
     public void initializeGrid(String stage){
+
+        // This will initialize the bomb location and the count associated to each bomb.
 
         int noOfMines;
         Random rand = new Random();
@@ -178,6 +182,7 @@ public class GameScreen extends AppCompatActivity{
 
     public void checkAndOpenNearBy(int position){
 
+        // The heart of the game which will open the cell and manage everything based on the user selection of the cell
         int nearby[] = new int[]{1,-1,-9,+9,-10,10,-8,8};
         int temp=0;
         for(int i=0;i<nearby.length;i++){
@@ -224,11 +229,15 @@ public class GameScreen extends AppCompatActivity{
     }
 
     public void initializeTimer(){
+
+        // This will initialize the game timer
         mChronometer.setBase(SystemClock.elapsedRealtime());
         mChronometer.start();
     }
 
     public void stopAndReset(){
+
+        // This will be invoked when user lose the game
 
         mPlayer.stop();
         mPlayer = MediaPlayer.create(this, R.raw.bomb);
@@ -240,17 +249,11 @@ public class GameScreen extends AppCompatActivity{
         progress.setText("Game Over!");
 
         loseDialog();
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = preferences.edit();
-        TextView textView = (TextView) findViewById(R.id.timer);
-        editor.putString("time",textView.getText().toString());
-        editor.apply();
-
     }
 
     public void reset(View view){
 
+        // This will reset the game when pressed on the smiley.
         mPlayer.stop();
 
         TextView progress = (TextView) findViewById(R.id.progress);
@@ -274,6 +277,7 @@ public class GameScreen extends AppCompatActivity{
 
     public void checkIfUserWin(){
 
+        // Check if user win and if user win the game, this dialog will be diplayed
 
         for(int i=0;i<items.length;i++){
             if(helperItems[i]>0 && helperItems[i]<9){
@@ -282,6 +286,21 @@ public class GameScreen extends AppCompatActivity{
         }
 
         mChronometer.stop();
+
+        // Check if it is High Score
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        TextView textView = (TextView) findViewById(R.id.timer);
+        String[] _asd = preferences.getString("time","").split(":");
+
+        if(Integer.parseInt(textView.getText().toString().split(":")[0]) <= Integer.parseInt(_asd[0])){
+            if (Integer.parseInt(textView.getText().toString().split(":")[1]) < Integer.parseInt(_asd[1])){
+                editor.putString("time",textView.getText().toString());
+            }
+        }
+        editor.apply();
+
 
         ImageView image = new ImageView(this);
             image.setImageResource(R.drawable.win);
@@ -301,6 +320,7 @@ public class GameScreen extends AppCompatActivity{
 
     public void loseDialog(){
 
+        // When user lose the game, this dialog will be diplayed
         ImageView image = new ImageView(this);
         image.setImageResource(R.drawable.lose);
         AlertDialog.Builder builder =
@@ -320,7 +340,7 @@ public class GameScreen extends AppCompatActivity{
 
     @Override
     public void onBackPressed() {
-
+        // When back button is pressed, it will stop the music
         mChronometer.stop();
         if (mPlayer.isPlaying()) {
             mPlayer.stop();
@@ -328,6 +348,4 @@ public class GameScreen extends AppCompatActivity{
         mPlayer.release();
         super.onBackPressed();
     }
-
-
 }
