@@ -44,7 +44,7 @@ public class GameScreen extends AppCompatActivity{
     // Images index
     Integer openAddr[] = new Integer[]{2130903047,2130903048,2130903049,2130903050,2130903051,2130903052,2130903053,2130903054,2130903055};
 
-
+    // These are the possible index around the bomb i.e, current_bomb_index + nearby[i]
     int nearby[] = new int[]{1,-1,-9,+9,-10,10,-8,8};
 
     @Override
@@ -160,7 +160,7 @@ public class GameScreen extends AppCompatActivity{
             }
         }
 
-        //    int nearby[] = new int[]{1,-1,-9,+9,-10,10,-8,8};
+        //int nearby[] = new int[]{1,-1,-9,+9,-10,10,-8,8};
         for(int i=0;i<helperItems.length;i++){
             if(helperItems[i]==BOMB){
                 int temp=0;
@@ -171,6 +171,7 @@ public class GameScreen extends AppCompatActivity{
                         }else if((i%9)==0 && (nearby[j]==-1 || nearby[j]==-10 || nearby[j]==8)){
                             continue;
                         }
+                        // This number in the grid will represent how many bombs we have nearby
                         helperItems[temp] += 1;
                     }
                 }
